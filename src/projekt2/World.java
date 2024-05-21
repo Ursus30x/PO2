@@ -201,12 +201,14 @@ public class World {
     public Czlowiek getCzlowiek(){
         return czlowiek;
     }
+    public void setCzlowiek(Czlowiek czlowiek){this.czlowiek = czlowiek;}
     public int getIdCounter(){
         return idCounter;
     }
     public WorldType getWorldType(){
         return worldType;
     }
+    public String getWorldName(){return worldName;}
     public void setIdCounter(int idCounter){
         this.idCounter = idCounter;
     }

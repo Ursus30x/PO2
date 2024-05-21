@@ -182,12 +182,15 @@ public class WorldGUI implements ActionListener, KeyListener {
             if(keyCode == KeyEvent.VK_ENTER){
                 world.simulateTurn();
             }
-            else if(keyCode == KeyEvent.VK_P){
-                world.getCzlowiek().activatePower();
+            else if(world.getCzlowiek() != null){
+                if(keyCode == KeyEvent.VK_P){
+                    world.getCzlowiek().activatePower();
+                }
+                else{
+                    world.getCzlowiek().updateMove(keyCode);
+                }
             }
-            else{
-                world.getCzlowiek().updateMove(keyCode);
-            }
+
 
             refreshGUI();
         }
@@ -347,7 +350,11 @@ public class WorldGUI implements ActionListener, KeyListener {
         }
 
         public void refreshLogGraphics(){
-            String header = "tu som logi\nTurn: " + world.getTurn() + "\n";
+            String checkIfHumanAlive;
+            if(world.getCzlowiek() != null)checkIfHumanAlive = "Alive";
+            else checkIfHumanAlive = "Dead";
+
+            String header = "Jakub Szymczyk 198134\nWorld name: " + world.getWorldName() + "\nTurn: " + world.getTurn() + "\nOrganisms: " + world.getOrganisms().size() + "\nHuman status: " + checkIfHumanAlive + "\n";
             logs = header + Logger.getLog();
             textArea.setText(logs);
         }
@@ -379,7 +386,15 @@ public class WorldGUI implements ActionListener, KeyListener {
 
             Object src = e.getSource();
             if(src == menuItems[0]){//Czlowiek
-                world.addOrganism(new Czlowiek(new Point(newOrgPosX,newOrgPosY),world));
+                if(world.getCzlowiek() == null){
+                    Czlowiek newHuman = new Czlowiek(new Point(newOrgPosX,newOrgPosY),world);
+                    world.setCzlowiek(newHuman);
+                    world.addOrganism(newHuman);
+                }
+                else{
+                    Logger.addLog("Nie mozna dodac czlowieka, poniewaz istnieje juz jedna instancja");
+                }
+
             }
             else if(src == menuItems[1]){//Wilk
                 world.addOrganism(new Wilk(new Point(newOrgPosX,newOrgPosY),world));
